@@ -1,0 +1,17 @@
+###> base ###
+.idea
+.DS_Store
+/vendor/
+###< base ###
+
+###> friendsofphp/php-cs-fixer ###
+.php-cs-fixer.cache
+###< friendsofphp/php-cs-fixer ###
+
+###> symfony/phpunit-bridge ###
+.phpunit.result.cache
+###< symfony/phpunit-bridge ###
+
+###> other ###
+/docker/mysql
+###< other ###

@@ -1,0 +1,48 @@
+version: '3.7'
+
+services:
+  php:
+    container_name: 'php'
+    build:
+      context: ./
+      dockerfile: ./docker/php/Dockerfile
+      args:
+#        PHALCON_VERSION: 5.1.4
+        PSR_VERSION: 1.1.0
+        PHP_VERSION: 8.1
+    restart: unless-stopped
+    environment:
+      XDEBUG_CONFIG: discover_client_host=1 client_host=host.docker.internal client_port=9003
+      XDEBUG_MODE: debug
+      PHP_IDE_CONFIG: serverName=docker
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    volumes:
+      - ./:/var/www/html
+
+  nginx:
+    container_name: 'nginx'
+    build: ./docker/nginx
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+      - "8001:81"
+    volumes:
+      - ./:/var/www/html
+      - ./docker/nginx/:/etc/nginx/conf.d
+
+  db:
+    container_name: 'db'
+    image: mysql:8.0.32
+    #    user: "root"
+    environment:
+      MYSQL_DATABASE: 'cms_db'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: '12345'
+      MYSQL_ROOT_PASSWORD: ''
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./docker/mysql/db:/var/lib/mysql
+      - ./docker/mysql/schema:/docker-entrypoint-initdb.d

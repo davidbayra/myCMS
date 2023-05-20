@@ -2,6 +2,8 @@
 
 namespace App\Tests;
 
+use App\Engine\Core\Database\Connection;
+use App\Engine\Core\Database\QueryBuilder;
 use App\Temp\ExampleDependency;
 use App\Temp\ExamServ;
 use App\Temp\ExamComm;
@@ -144,9 +146,9 @@ class DoublesTest extends TestCase
             ->disableOriginalConstructor()
             ->onlyMethods(['doSomething'])
             ->getMock();
-        $mock->method('doSomething')->willReturn('foo');
+        $mock->method('doSomething')->willReturn('pizda');
 
-        $this->assertSame('foo', $mock->nonMock('hui'));
+        $this->assertSame('pizda', $mock->nonMock('hui'));
     }
 
     public function testAddMethod()
@@ -162,5 +164,62 @@ class DoublesTest extends TestCase
 
         $this->assertSame('foo', $mock->nonMethodService(new ExampleDependency()));
     }
+    private static mixed $db;
+    private static bool $mockEnable = false;
+    public static function setUpBeforeClass(): void
+    {
+
+
+    }
+
+    public function setUp(): void
+    {
+        if (self::$mockEnable) {return;}
+
+        $db = $this->createMock(Connection::class);
+        $db->expects($this->once());
+
+
+    }
+
+    public function testMockDb()
+    {
+        $arrayFromMockDb = [
+            'id' => 5,
+            'name' => 'David',
+            'email' => 'd@d.ru',
+            'pass' => '123',
+            'role' => 'admin',
+            'date_reg' => '232.23.23',
+            'hash' => 'asdad'
+            ];
+
+        $mockDb = $this->createMock(QueryBuilder::class);
+        $mockDb->expects($this->once())
+            ->method('select')
+            ->with('field')
+            ->willReturnSelf();
+        $mockDb->expects($this->once())
+            ->method('from')
+            ->with('table')
+            ->willReturnSelf();
+        $mockDb->expects($this->once())
+            ->method('where')
+            ->with('column', 'value', 'operator')
+            ->willReturnSelf();
+        $mockDb->expects($this->once())
+            ->method('getQuery')
+            ->willReturn($fetchAllFromMockDb);
+
+        $fetchAllFromMockDb = $mockDb
+            ->select('table')
+            ->from('user')
+            ->where('asd', 'asd', 'asd')
+            ->getQuery();
+
+        $this->assertSame($fetchAllFromMockDb, $arrayFromMockDb);
+    }
+
+
 }
 

@@ -5,6 +5,8 @@
 const APP_DIR = __DIR__ . '/../src/';
 const ROOT_DIR = __DIR__ . '/../';
 
+define("ENV", $_SERVER['ENV']);
+
 require_once __DIR__ . '/../src/Engine/bootstrap.php';
 
 

@@ -1,29 +1,31 @@
 {
-  "require": {
-    "php": "~8.1",
-    "ext-psr": "1.1.0",
-    "ext-pdo": "*"
-  },
-
-  "require-dev": {
-    "friendsofphp/php-cs-fixer": "*",
-    "phpunit/phpunit": "^10",
-    "ext-http": "*",
-    "symfony/var-dumper": "*"
-  },
-
-  "autoload": {
-    "psr-4": {
-      "App\\": "src"
-    }
-  },
-
-  "autoload-dev": {
-    "psr-4": {
-      "App\\Tests\\": "tests"
-    }
-  },
-
-  "type": "library",
-  "license": "MIT"
+    "require": {
+        "php": ">=8.2",
+        "ext-psr": "1.2.0",
+        "ext-pdo": "*",
+        "ext-openssl": "*"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "*",
+        "phpunit/phpunit": "^10",
+        "ext-http": "*",
+        "symfony/var-dumper": "*",
+        "mockery/mockery": "^1.5",
+        "spatie/phpunit-snapshot-assertions": "^5.0",
+        "codeception/codeception": "^5.0",
+        "codeception/module-phpbrowser": "*",
+        "codeception/module-asserts": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\Tests\\": "tests"
+        }
+    },
+    "type": "library",
+    "license": "MIT"
 }

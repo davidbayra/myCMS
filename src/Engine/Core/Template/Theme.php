@@ -12,23 +12,26 @@ class Theme
         'sidebar' => 'sidebar-%'
     ];
 
+    private array $templatePathEnv = [
+        'Admin' => APP_DIR . 'Admin/View/',
+        'Cms' => APP_DIR . 'Content/themes/default/',
+    ];
+
     protected array $data = [];
 
     public string $url = '';
 
-    /**
-     * @throws Exception
-     */
+
     public function header(?string $name = null): void
     {
-        $name = $name ? sprintf(self::RULES_NAME_FILE['header'], $name): 'header';
+        $name = $name ? sprintf(self::RULES_NAME_FILE['header'], $name) : 'header';
 
         $this->loadTemplateFile($name);
     }
 
     public function footer(string $name = null): void
     {
-        $name = $name ? sprintf(self::RULES_NAME_FILE['footer'], $name): 'footer';
+        $name = $name ? sprintf(self::RULES_NAME_FILE['footer'], $name) : 'footer';
 
         $this->loadTemplateFile($name);
     }
@@ -51,7 +54,8 @@ class Theme
      */
     public function loadTemplateFile(string $nameFile, array $data = []): void
     {
-        $templateFile = APP_DIR . 'Content/themes/default/' . $nameFile . '.php';
+//        $templateFile = APP_DIR . 'Content/themes/default/' . $nameFile . '.php';
+        $templateFile = $this->templatePathEnv[$_SERVER['ENV']] . $nameFile . '.php';
 
         if (is_file($templateFile)){
             extract($data);

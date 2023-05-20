@@ -9,15 +9,13 @@ use App\Engine\Core\Router\Router;
 
 class CMS
 {
-    private DI $di;
     public Router $router;
 
-    public function __construct(DI $di)
+    public function __construct(private readonly DI $di)
     {
-        $this->di = $di;
-
         $this->router = $this->di->get('router') ?? null;
     }
+
     public function run(): void
     {
         try {

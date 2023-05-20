@@ -13,17 +13,32 @@ class AdminController extends Controller
     public function __construct(DI $di)
     {
         parent::__construct($di);
-        echo 'sdfsdf';
+
         $this->auth = new Auth();
-        $this->checkAuthorization();
+
+//        $this->checkAuthorization();
+
+        if ($this->auth->hashUser() === null){
+            header('Location: /login/'); exit;
+        }
     }
 
     public function checkAuthorization(): void
     {
+        if ($this->auth->hashUser() !== null){
+            $this->auth->authorize($this->auth->hashUser());
+        }
+
         if (!$this->auth->authorized()){
             // redirect
-            header('Location: /login', true, 301);
-            exit;
+            header('Location: /login/'); exit;
         }
     }
+
+    public function logout(): void
+    {
+        $this->auth->logOut();
+        header('Location: /login/'); exit;
+    }
+
 }

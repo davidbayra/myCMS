@@ -3,6 +3,7 @@
 namespace App\Engine\Core\Template;
 
 use App\Engine\Core\Template\Theme;
+
 class View
 {
     private array $templatePathEnv = [

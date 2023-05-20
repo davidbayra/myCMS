@@ -3,39 +3,44 @@
 namespace App\Engine\Core\Database;
 
 use App\Engine\Core\Config\Config;
+use Exception;
 use PDO;
 
 class Connection
 {
-    private $link;
+    private PDO $link;
 
+    /**
+     * @throws Exception
+     */
     public function __construct()
     {
         return $this->connect();
     }
 
+    /**
+     * @throws Exception
+     */
     private function connect(): static
     {
-
         $config = Config::file('database');
         $hostDbname = "mysql:host={$config['host']};dbname={$config['db_name']};charset=utf8";
         $this->link = new PDO($hostDbname, $config['username'], $config['pass']);
 
         return $this;
     }
-    private function execute($sql)
+
+    public function execute($sql, array $values = []): bool
     {
         $statement = $this->link->prepare($sql);
 
-        return $statement->execute();
+        return $statement->execute($values);
     }
 
-    public function query($sql)
+    public function query($sql, array $values = []): bool|array
     {
         $statement = $this->link->prepare($sql);
-        $statement->execute($sql);
-        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-
-        return $result ?? [];
+        $statement->execute($values);
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 }

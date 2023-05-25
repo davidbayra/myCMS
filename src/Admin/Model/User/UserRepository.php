@@ -6,7 +6,7 @@ use App\Engine\Model;
 
 class UserRepository extends Model
 {
-     public function getUsers()
+    public function getUsers()
     {
         $sql = $this->queryBuilder
             ->select()
@@ -19,8 +19,9 @@ class UserRepository extends Model
 
     public function testChangeUser(): void
     {
-        $user = new User(1);
-        $user->setEmail('d@d1.ru');
+        $user = new User(5);
+        $user->setEmail('d@d.ru');
+        $user->setRole('user');
         $user->save();
     }
 }

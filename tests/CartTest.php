@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests;
+//namespace App\Tests;
 
 use PHPUnit\Framework\TestCase;
 use App\Temp\Cart;

@@ -1,4 +1,4 @@
-<?php $this->theme->header(); ?>
+<?php $this->theme->header();?>
 
 <main>
     <div class="container">
@@ -12,4 +12,4 @@
     </div>
 </main>
 
-<?php $this->theme->footer(); ?>
+<?php $this->theme->footer();?>

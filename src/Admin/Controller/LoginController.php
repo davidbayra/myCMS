@@ -10,14 +10,16 @@ use App\Engine\DI\DI;
 class LoginController extends Controller
 {
     protected Auth $auth;
-    protected mixed $db;
+
     public function __construct(DI $di)
     {
         parent::__construct($di);
+
         $this->auth = new Auth();
 
-        if ($this->auth->hashUser() !== null){
-            header('Location: /'); exit;
+        if ($this->auth->hashUser() !== null) {
+            header('Location: /');
+            exit;
         }
     }
 
@@ -31,7 +33,8 @@ class LoginController extends Controller
         $params = $this->request->post;
 
         $queryBuilder = new QueryBuilder();
-        $sql = $queryBuilder->select()
+        $sql = $queryBuilder
+            ->select()
             ->from('user')
             ->where('email', $params['email'])
             ->where('pass', md5($params['password']))
@@ -39,13 +42,10 @@ class LoginController extends Controller
             ->getQuery();
 
         $query = $this->db->query($sql, $queryBuilder->values);
-        echo '<pre>';
-        print_r($sql);
-//        print_r($query);
 
-        if (!empty($query)){
+        if (!empty($query)) {
             $user = $query[0];
-            if ($user['role'] == 'admin'){
+            if ($user['role'] == 'admin') {
                 $hash = md5($user['id'] . $user['name'] . $user['pass'] . $this->auth->salt());
 
                 $sql = $queryBuilder
@@ -55,13 +55,11 @@ class LoginController extends Controller
                     ->getQuery();
 
                 $execute = $this->db->execute($sql, $queryBuilder->values);
-//                $this->auth->authorize($hash);
-                setcookie('auth_user', $hash, time() + 157680000, '/auth/');
+                $this->auth->authorize($hash);
 
-                print_r($sql);
-//                print_r($execute);
-
-                header('Location: /login/'); exit;
+                setcookie('auth_user', $hash, time() + 157680000, '/');
+                header('Location: /login');
+                exit;
             }
         }
 

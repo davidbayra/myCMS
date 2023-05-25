@@ -1,19 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Engine\Core\Router;
 
 class Router
 {
     private array $routers = [];
-    private $host;
-    private UrlDispatcher $dispatcher;
 
-    public function __construct($host)
-    {
-        $this->host = $host;
-    }
+    //    private string $host;
 
-    public function add($key, $pattern, $controller, $method = 'GET'): void
+    //    public function __construct(string $host)
+    //    {
+    //        $this->host = $host;
+    //    }
+
+    public function add(string $key, string $pattern, string $controller, string $method = 'GET'): void
     {
         $this->routers[$key] = [
             'pattern' => $pattern,
@@ -22,25 +24,18 @@ class Router
         ];
     }
 
-    public function dispatch($method, $uri): ?DispatchedRoute
+    public function dispatch(string $method, string $uri): ?DispatchedRoute
     {
-        return $this->getDispatcher()->dispatch($method, $uri);
-    }
-
-    public function getDispatcher(): UrlDispatcher
-    {
-        // if ($this->dispatcher == null){
-        $this->dispatcher = new UrlDispatcher();
+        $dispatcher = new UrlDispatcher();
 
         foreach ($this->routers as $router) {
-            $this->dispatcher->register(
+            $dispatcher->register(
                 $router['method'],
                 $router['pattern'],
                 $router['controller']
             );
         }
-        //}
 
-        return $this->dispatcher;
+        return $dispatcher->dispatch($method, $uri);
     }
 }

@@ -3,27 +3,17 @@
 namespace App\Admin\Controller;
 
 use App\Engine\Controller;
-use stdClass;
 
-class DashboardController extends Controller
+class DashboardController extends AdminController
 {
     public function indexAction(): void
     {
-        echo '<pre>';
-
-        $userModel = $this->load->model('user');
-        var_dump($userModel);
-
-        $userModel->repository->getUsers();
+        //        $userModel = $this->load->model('user');
+        //        $userModel->repository->testChangeUser();
+        //
+        //        echo '<pre>';
+        //        var_dump($userModel->repository->getUsers());
 
         $this->view->render('dashboard');
-
-//        $stdClass = new stdClass();
-//        $stdClass->repo = \App\Admin\Model\User\UserRepository::class;
-//        var_dump($stdClass);
-//        print_r($stdClass->repo->getName());
-
-
     }
-
 }

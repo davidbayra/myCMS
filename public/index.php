@@ -1,16 +1,63 @@
 <?php
 
-//require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use App\Engine\CMS;
+use App\Engine\DI\DI;
 
 const APP_DIR = __DIR__ . '/../src/';
 const ROOT_DIR = __DIR__ . '/../';
 
 define("ENV", $_SERVER['ENV']);
 
-require_once __DIR__ . '/../src/Engine/bootstrap.php';
+try {
+    $di = new DI();
+    $services = require_once __DIR__ . '/../src/Engine/Config/Service.php';
+
+    foreach ($services as $service) {
+        $provider = new $service($di);
+        $provider->init();
+    }
+
+    $cms = new CMS($di);
+    $cms->run();
+
+} catch(\ErrorException $e) {
+    echo $e->getMessage();
+}
 
 
 
+
+
+
+
+//$router = new \App\Router();
+//
+//$router->get('/index', function (array $params = ['user' => 'Mahmut']) {
+//    echo 'Home page: ' . $params;
+//});
+//
+//$router->get('/about', function (array $params = ['user' => 'Mahmut']) {
+//    echo 'About page: '. $params['user'];
+//});
+//
+//$router->get('/contact', function () {
+//        require_once __DIR__  . '/../temp/contact.phtml';
+//    }
+//);
+//
+//$router->post('/contact', function () {
+//        var_dump($_POST);
+//    }
+//);
+//
+//$router->addNotFoundHandler(function () {
+//    $title = 'Not Found';
+//    require_once __DIR__ . '/../temp/template.phtml';
+//});
+//
+//$router->run();
 
 
 

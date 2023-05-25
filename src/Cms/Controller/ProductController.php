@@ -3,7 +3,6 @@
 namespace App\Cms\Controller;
 
 use App\Engine\Controller;
-use App\Engine\DI\DI;
 
 class ProductController extends Controller
 {

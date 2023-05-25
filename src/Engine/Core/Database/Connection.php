@@ -43,4 +43,9 @@ class Connection
         $statement->execute($values);
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function lastInsertId(): false|string
+    {
+        return $this->link->lastInsertId();
+    }
 }

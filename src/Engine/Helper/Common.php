@@ -12,12 +12,12 @@ class Common
 
         return false;
     }
-    public static function getMethod()
+    public static function getMethod(): string
     {
         return $_SERVER['REQUEST_METHOD'];
     }
 
-    public static function getPathUri()
+    public static function getPathUri(): string
     {
         $pathUri = $_SERVER['REQUEST_URI'];
 

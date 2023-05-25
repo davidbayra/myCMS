@@ -27,7 +27,20 @@ trait ActiveRecord
         return $this->table;
     }
 
-    public function save(): void
+    public function findOne()
+    {
+        $find = $this->db->query(
+            $this->queryBuilder
+                ->select()
+                ->from($this->getTable())
+                ->where('id', $this->id)
+                ->getQuery(),
+            $this->queryBuilder->values
+        );
+        return $find[0] ?? null;
+    }
+
+    public function save(): int
     {
         $properties = $this->getIssetProperties();
 
@@ -50,15 +63,16 @@ trait ActiveRecord
                     $this->queryBuilder->values
                 );
             }
+            return $this->db->lastInsertId();
         } catch (\Exception $e) {
             echo $e->getMessage();
         }
+        return false;
     }
 
     private function getIssetProperties(): array
     {
-        $properties =[];
-
+        $properties = [];
         foreach ($this->getProperties() as $key => $property) {
             if (isset($this->{$property->getName()})) {
                 $properties[$property->getName()] = $this->{$property->getName()};

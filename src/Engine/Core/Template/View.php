@@ -3,6 +3,7 @@
 namespace App\Engine\Core\Template;
 
 use App\Engine\Core\Template\Theme;
+use function PHPUnit\Framework\once;
 
 class View
 {
@@ -19,7 +20,7 @@ class View
     {
         $templatePath = $this->templatePathEnv[$_SERVER['ENV']] . $template . '.php';
 
-        if (!is_file($templatePath)){
+        if (!is_file($templatePath)) {
             throw new \InvalidArgumentException(
                 sprintf('Template %s not found in %s', $template, $templatePath)
             );
@@ -31,14 +32,15 @@ class View
         ob_start();
         ob_implicit_flush(0);
 
-        try{
+        try {
             require $templatePath;
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             ob_end_clean();
             throw $e;
         }
 
-        echo ob_get_clean();
+        $buffer =  ob_get_clean();
+
     }
 
     private function getTemplatePath($template, $env = 'Cms'): string

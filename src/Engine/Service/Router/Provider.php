@@ -11,7 +11,7 @@ class Provider extends AbstractProvider
 
     public function init(): void
     {
-        $router = new Router('localhost/index');
+        $router = new Router();
         $this->di->set($this->serviceName, $router);
     }
 }

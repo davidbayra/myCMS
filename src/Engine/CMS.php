@@ -9,11 +9,11 @@ use App\Engine\Core\Router\Router;
 
 class CMS
 {
-    public Router $router;
+    private ?Router $router;
 
     public function __construct(private readonly DI $di)
     {
-        $this->router = $this->di->get('router') ?? null;
+        $this->router = $this->di->get('router');
     }
 
     public function run(): void
@@ -21,6 +21,7 @@ class CMS
         try {
             require_once __DIR__ . '/../' . $_SERVER['ENV'] . '/Routes.php';
             $routerDispatch = $this->router->dispatch(Common::getMethod(), Common::getPathUri());
+
             if (!$routerDispatch) {
                 $routerDispatch = new DispatchedRoute('ExceptionsController/page404');
             }
@@ -31,8 +32,10 @@ class CMS
             $parameters = $routerDispatch->getParameters();
 
             call_user_func_array([new $controller($this->di), $action], array_values($parameters));
-        } catch (\Exception $e){
+
+        } catch (\Exception $e) {
             echo $e->getMessage();
+            exit;
         }
     }
 }

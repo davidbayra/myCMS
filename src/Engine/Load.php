@@ -9,7 +9,7 @@ class Load
 
     public function model($modelName, $modelDir = null): \stdClass
     {
-//        global $di;
+        global $di;
 
         $model = new \stdClass();
         $modelName = ucfirst($modelName);
@@ -17,16 +17,20 @@ class Load
 
         $namespaceEntity = sprintf(
             self::MASK_MODEL_ENTITY,
-            ENV, $modelDir, $modelName
+            ENV,
+            $modelDir,
+            $modelName
         );
 
         $namespaceRepository = sprintf(
             self::MASK_MODEL_REPOSITORY,
-            ENV, $modelDir, $modelName
+            ENV,
+            $modelDir,
+            $modelName
         );
 
-        $model->entity = $namespaceEntity;
-        $model->repository = $namespaceRepository;
+        $model->entity = new $namespaceEntity;
+        $model->repository = new $namespaceRepository($di);
 
         return $model;
     }

@@ -8,7 +8,7 @@ use Exception;
 
 class Provider extends AbstractProvider
 {
-    public string $serviceName = 'config';
+    private string $serviceName = 'config';
 
     /**
      * @throws Exception

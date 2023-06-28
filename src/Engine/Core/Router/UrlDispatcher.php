@@ -22,16 +22,49 @@ class UrlDispatcher
         return $this->routes[$method];
     }
 
-    public function dispatch(string $method, string $uri): ?DispatchedRoute
+//    public function dispatch(string $method, string $uri): ?DispatchedRoute
+//    {
+//        foreach ($this->routes($method) as $route => $controller) {
+//            $pattern = sprintf("#^%s\$#s", $route);
+//            if (preg_match($pattern, $uri, $parameters)) {
+//                return new DispatchedRoute($controller, $parameters);
+//            }
+//        }
+//
+//        return null;
+//    }
+
+    private function processParam($parameters): mixed
     {
-        foreach ($this->routes($method) as $route => $controller) {
-            $pattern = sprintf("#^%s\$#s", $route);
-            if (preg_match($pattern, $uri, $parameters)) {
-                //                echo '<pre>'; print_r($parameters);
-                return new DispatchedRoute($controller, $parameters);
+        foreach($parameters as $key => $value) {
+            if(is_int($key)) {
+                unset($parameters[$key]);
             }
         }
 
+        return $parameters;
+    }
+
+    public function dispatch($method, $uri): ?DispatchedRoute
+    {
+        $routes = $this->routes(strtoupper($method));
+
+        if (array_key_exists($uri, $routes)) {
+            return new DispatchedRoute($routes[$uri]);
+        }
+
+        return $this->doDispatch($method, $uri);
+    }
+
+    private function doDispatch($method, $uri): ?DispatchedRoute
+    {
+        foreach($this->routes($method) as $route => $controller) {
+            $pattern = sprintf("#^%s\$#s", $route);
+
+            if(preg_match($pattern, $uri, $parameters)) {
+                return new DispatchedRoute($controller, $this->processParam($parameters));
+            }
+        }
         return null;
     }
 

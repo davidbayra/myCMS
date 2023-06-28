@@ -15,13 +15,15 @@ class Router
     //        $this->host = $host;
     //    }
 
-    public function add(string $key, string $pattern, string $controller, string $method = 'GET'): void
+    public function add(string $key, string $pattern, string $controller, string $method = 'GET'): int
     {
         $this->routers[$key] = [
             'pattern' => $pattern,
             'controller' => $controller,
             'method' => $method
         ];
+
+        return  count($this->routers);
     }
 
     public function dispatch(string $method, string $uri): ?DispatchedRoute

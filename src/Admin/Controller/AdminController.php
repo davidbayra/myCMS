@@ -9,6 +9,7 @@ use JetBrains\PhpStorm\NoReturn;
 
 class AdminController extends Controller
 {
+    protected array $data = [];
     protected Auth $auth;
 
     public function __construct(DI $di)

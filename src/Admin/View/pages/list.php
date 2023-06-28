@@ -23,15 +23,15 @@
                 <?php foreach($pages as $page): ?>
                     <tr>
                         <th scope="row">
-                            <?= $page->id ?>
+                            <?= $page['id'] ?>
                         </th>
                         <td>
-                            <a href="/pages/edit<?= $page->id ?>">
-                                <?= $page->title ?>
+                            <a href="/pages/edit/<?= $page['id'] ?>">
+                                <?= $page['title'] ?>
                             </a>
                         </td>
                         <td>
-                            <?= $page->date ?>
+                            <?= $page['date'] ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>

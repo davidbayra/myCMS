@@ -11,15 +11,15 @@ class PageController extends AdminController
     public function listing(): void
     {
         $pageModel = $this->load->model('page');
-        $data['pages'] = $pageModel->repository->getPages();
-        $this->view->render('pages/list', $data['pages']);
+        $this->data['pages'] = $pageModel->repository->getPages();
+        $this->view->render('pages/list', $this->data);
     }
 
     public function edit($id): void
     {
         $pageModel = $this->load->model('page');
-        $data['pages'] = $pageModel->repository->getPageData($id);
-        $this->view->render('pages/edit');
+        $this->data['page'] = $pageModel->repository->getPageData($id);
+        $this->view->render('pages/edit', $this->data);
     }
 
     /**
@@ -43,6 +43,16 @@ class PageController extends AdminController
         $pageModel = $this->load->model('page');
         if (isset($params['title'])) {
             $pageId = $pageModel->repository->createPage($params);
+            print $pageId;
+        }
+    }
+
+    public function update(): void
+    {
+        $params = $this->request->post;
+        $pageModel = $this->load->model('page');
+        if (isset($params['title'])) {
+            $pageId = $pageModel->repository->updatePage($params);
             print $pageId;
         }
     }

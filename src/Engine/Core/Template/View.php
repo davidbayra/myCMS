@@ -40,7 +40,7 @@ class View
         }
 
         $buffer =  ob_get_clean();
-
+        echo $buffer;
     }
 
     private function getTemplatePath($template, $env = 'Cms'): string
